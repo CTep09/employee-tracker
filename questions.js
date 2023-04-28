@@ -1,20 +1,38 @@
 // Import packages 
 const inquirer = require('inquirer');
-const fs = require('fs');
-
 
 // presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-
 
 // Create an array of questions for user input
 const questions = [
     {
         type: 'list',
         name: 'introChoices',
-        message: 'View All Departments',
-        choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role']
+        message: 'Please select an option from the lists',
+        choices: [
+            'View all Departments', 
+            'View all Roles', 
+            'View all Employees', 
+            'Add a Department', 
+            'Add a Role', 
+            'Add an Employee', 
+            'Update an Employee Role'
+        ]
     },   
 ];
+
+const initialPrompt = function () {
+
+    return inquirer.prompt(questions)
+        .then((answer) => {
+            if (answer.choices === 'View all Departments') {
+                viewAllDepartments();
+            } else if (answer.choices === 'View all Roles') {
+                viewAllRoles();
+            }
+        })
+
+}
 
 
 // // function to write README file
