@@ -1,13 +1,18 @@
+// Importing connection to MySql2
 const connection = require('./config/connection');
+
+// Importing inquirer and console.table
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 
+// Establishing connection with connection.js/Mysql2
 connection.connect((error) => {
   if (error) throw error;
 
   initialPrompt();
 })
 
+// Initial User question 
 const questions = [
   {
       type: 'list',
@@ -32,6 +37,7 @@ const initialPrompt = function () {
     .prompt(questions)
     .then((answer) => {
       console.log(answer);
+      // If user answer is equal to all departments, then viewAllDepartments()function will be triggered
         if (answer.introChoices === 'View all Departments') {
           viewAllDepartments();
         } else if (answer.introChoices === 'View all Roles') {
@@ -46,6 +52,7 @@ const initialPrompt = function () {
           addEmployee();
         } else if (answer.introChoices === 'Update an Employee Role') {
           updateEmployee();
+          // If none of the above are met/user selects 'Exit' connection will end
         } else {
           connection.end();
         }
