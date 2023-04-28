@@ -3,56 +3,18 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 
 
+// presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+
+
 // Create an array of questions for user input
 const questions = [
     {
-        type: 'input',
-        name: 'title',
-        message: 'Enter the title of your project'
-    },
-    {
-        type: 'input',
-        name: 'description',
-        message: 'Enter the description for your project'
-    },
-    {
-        type: 'input',
-        name: 'installation',
-        message: 'Enter the the installation instructions for your project'
-    },
-    {
-        type: 'input',
-        name: 'usage',
-        message: 'Enter the usage information for your project'
-    },
-    {
         type: 'list',
-        name: 'license',
-        message: 'Please select a license from the list',
-        choices: ['MIT', 'ISC', 'Apache', 'Eclipse', 'Mozilla', 'None']
-    },
-    {
-        type: 'input',
-        name: 'contribution',
-        message: 'Enter the usage contribution guidelines for your project'
-    },
-    {
-        type: 'input',
-        name: 'test',
-        message: 'Enter the usage test instructions for your project'
-    },
-    {
-        type: 'input',
-        name: 'questionsEmail',
-        message: 'Enter the email address for additional questions'
-    },
-    {
-        type: 'input',
-        name: 'questionsGitHub',
-        message: 'Enter your GitHub address for additional questions'
-    },
+        name: 'introChoices',
+        message: 'View All Departments',
+        choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role']
+    },   
 ];
-
 
 
 // // function to write README file
