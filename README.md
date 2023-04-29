@@ -3,7 +3,7 @@
 
    [![License](https://img.shields.io/badge/license-MIT-ff69b4)](https://opensource.org/license/MIT)
    
-   [![My Skills](https://skillicons.dev/icons?i=js)](https://skillicons.dev) 
+   [![My Skills](https://skillicons.dev/icons?i=js,nodejs,mysql,)](https://skillicons.dev) 
    
    
    ## Table of Contents
@@ -16,20 +16,13 @@
    - [**Questions**](#❓-questions)
    
    ## 📑 Description 
-   
+   Employee Tracker is a command-line application 
    
    ## 💾 Installation
    
 
    ## 💻 Usage
    
-   
-  ## 🤝 Contribution
-  
-
-  ## 🧪 Test
-  
-
   ## ❓ Questions 
    
    🖐 My name is Cassie! If you have any question about me or the project, feel free to contact me:
