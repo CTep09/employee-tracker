@@ -7,7 +7,7 @@
 - [**Description**](#📑-description)
 - [**Installation**](#💾-installation)
 - [**Usage**](#💻-usage)
-- [**Usage**](#🚀-Technology)
+- [**Technology**](#🚀-technology)
 - [**Questions**](#❓-questions)
 
 ## 📑 Description
@@ -35,6 +35,9 @@ If the user were to select "View all Departments" they would be presented with a
 
 ## 🚀 Technology 
 [![My Skills](https://skillicons.dev/icons?i=js,nodejs,mysql,)](https://skillicons.dev)
+- **Inquirer 8.24**
+- **Figlet**
+- **Console.table**
 
 ## ❓ Questions
 
