@@ -13,7 +13,7 @@ const connection = mysql.createConnection(
       // database that will be accessed     
       database: process.env.MYSQL_DATABASE
     },
-    console.log(`Connected to the employee_tracker_db database.`)
+    console.log(`Connected to the employee_tracker database.`)
 );
 
 module.exports = connection;

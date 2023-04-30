@@ -133,6 +133,15 @@ function addDepartment() {
 
 // Add a role - User prompted to enter the name, salary, and department for the role
 function addRole() {
+
+  const getDepartments = "SELECT * FROM department";
+  connection.query(getDepartments, (err, results) => {
+    if (err) throw err;
+
+    // Get the department names from the results, creating an array or choices
+    const choices = results.map((dept) => dept.department_name);
+
+
   inquirer
     .prompt([
       {
@@ -149,13 +158,7 @@ function addRole() {
         type: "list",
         name: "departmentName",
         message: "Which department is this role in?",
-        choices: [
-          "Behavior Analysis Unit",
-          "Forensic Psychology",
-          "Information Technology",
-          "Investigative Support",
-          "Operational Support",
-        ],
+        choices: choices,
       },
     ])
     .then((answer) => {
@@ -188,6 +191,7 @@ function addRole() {
         });
       });
     });
+})
 }
 
 // Add an employee - Prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
@@ -207,36 +211,13 @@ function addEmployee() {
       },
       {
         name: "role",
-        type: "list",
+        type: "input",
         message: "What is the employee's role?",
-        choices: [
-          "Supervisory Special Agent",
-          "Special Agent",
-          "Forensic Psychologist",
-          "IT Specialist",
-          "Investigative Analyst",
-          "Administrative Assistant",
-        ],
       },
       {
         name: "manager",
-        type: "list",
-        message: "Who will be the employee's manager?",
-        choices: [
-          "Aaron Hotchner",
-          "Emily Prentiss",
-          "Derek Morgan",
-          "Spencer Reid",
-          "Jennifer Jareau",
-          "Penelope Garcia",
-          "David Rossi",
-          "Ashley Seaver",
-          "Alex Blake",
-          "Kate Callahan",
-          "Tara Lewis",
-          "Luke Alvez",
-          "Matt Simmons",
-        ],
+        type: "input",
+        message: "Please enter Managers first and last name?",
       },
     ])
     .then(function (answer) {
@@ -373,45 +354,46 @@ function updateEmployee() {
 
 // View employees by department.
 function viewByDept() {
-  inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "departmentName",
-        message: "Which department is this role in?",
-        choices: [
-          "Behavior Analysis Unit",
-          "Forensic Psychology",
-          "Information Technology",
-          "Investigative Support",
-          "Operational Support",
-        ],
-      },
-    ])
-    .then(function (answer) {
-      
-      // Get the department ID based on the department name provided by the user
-      const getDeptId = "SELECT id FROM department WHERE department_name = ?";
-      
-      connection.query(getDeptId, answer.departmentName, (err, results) => {
-        // If there's an error, throw an error
-        if (err) throw err;
-        
-        // Get the department Id from the results of previous query
-        const departmentID = results[0].id;
-        
-        const sqlDept = "SELECT * FROM department WHERE id = ?;";
-        
-        connection.query(sqlDept, departmentID, (err, results) => {
+  // query to get all departments 
+  const getDepartments = "SELECT * FROM department";
+  connection.query(getDepartments, (err, results) => {
+    if (err) throw err;
+
+    // Get the department names from the results, creating an array or choices
+    const choices = results.map((dept) => dept.department_name);
+
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "departmentName",
+          message: "Which department is this role in?",
+          // Using array of choices to create a dynamic list of roles
+          choices: choices,
+        },
+      ])
+      .then(function (answer) {
+        // Get the department ID based on the department name provided by the user
+        const getDeptId = "SELECT id FROM department WHERE department_name = ?";
+
+        connection.query(getDeptId, answer.departmentName, (err, results) => {
+          // If there's an error, throw an error
           if (err) throw err;
 
-          console.table(results)
-          initialPrompt();
+          // Get the department Id from the results of previous query
+          const departmentID = results[0].id;
 
-        })
+          const sqlDept = "SELECT * FROM department WHERE id = ?;";
 
-    });
-})
+          connection.query(sqlDept, departmentID, (err, results) => {
+            if (err) throw err;
+
+            console.table(results);
+            initialPrompt();
+          });
+        });
+      });
+  });
 }
 
 // View employees by manager.
