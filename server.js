@@ -4,6 +4,17 @@ const connection = require("./config/connection");
 // Importing inquirer and console.table
 const inquirer = require("inquirer");
 
+var figlet = require("figlet");
+
+figlet("Employee Tracker", function (err, data) {
+  if (err) {
+    console.log("Something went wrong...");
+    console.dir(err);
+    return;
+  }
+  console.log(data);
+});
+
 // Establishing connection with connection.js/Mysql2
 connection.connect((error) => {
   if (error) throw error;
@@ -328,8 +339,8 @@ function updateEmployee() {
 
         const employeeInfo =
           "SELECT id FROM employee WHERE first_name = ? AND last_name = ?";
-        
-          connection.query(
+
+        connection.query(
           employeeInfo,
           [employee_first, employee_last],
           function (err, res) {
