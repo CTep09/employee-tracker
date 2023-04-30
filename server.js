@@ -196,7 +196,22 @@ function addRole() {
 
 // Add an employee - Prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 function addEmployee() {
-  // Prompt user for employee details
+  // Get a current list of roles 
+  const getRoles = "SELECT * FROM role";
+  connection.query(getRoles, (err, results) => {
+    if (err) throw err;
+    // Get the department names from the results, creating an array or choices
+    const roleList = results.map((role) => role.title);
+
+  // Get a current list of employees to select a manager 
+  const getMgr = "SELECT * FROM employee";
+  connection.query(getMgr, (err, results) => {
+    if (err) throw err;
+    // Get the department names from the results, creating an array or choices
+    const managerList = results.map((employee) => {
+      return `${employee.first_name} ${employee.last_name}`;
+      })
+
   inquirer
     .prompt([
       {
@@ -211,13 +226,15 @@ function addEmployee() {
       },
       {
         name: "role",
-        type: "input",
+        type: "list",
         message: "What is the employee's role?",
+        choices: roleList,
       },
       {
         name: "manager",
-        type: "input",
+        type: "list",
         message: "Please enter Managers first and last name?",
+        choices: managerList,
       },
     ])
     .then(function (answer) {
@@ -243,6 +260,7 @@ function addEmployee() {
           function (err, res) {
             if (err) throw err;
             const manager_id = res[0].id;
+            
 
             // Insert the new employee data into employee table
             const newEmp = "INSERT INTO employee SET ?";
@@ -268,10 +286,14 @@ function addEmployee() {
         );
       });
     });
+})
+})
 }
 
 // Update an employee role - Prompted to select an employee to update and their new role and this information is updated in the database
 function updateEmployee() {
+  // To get the roles in the database
+  
   inquirer
     .prompt([
       {
