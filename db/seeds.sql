@@ -16,7 +16,7 @@ INSERT INTO role (id, title, salary, department_id) VALUES
 (6, 'Administrative Assistant', 50000.00, 5);
 
 -- Insert employee data into employee table
-INSERT INTO employee (id, first_name, last_name, Manager_id, role_id) VALUES 
+INSERT INTO employee (id, first_name, last_name, manager_id, role_id) VALUES 
 (1, 'Aaron', 'Hotchner', NULL, 1),
 (2, 'Emily', 'Prentiss', 1, 2),
 (3, 'Derek', 'Morgan', 1, 2),

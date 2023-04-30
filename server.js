@@ -1,17 +1,12 @@
 // Importing connection to MySql2
 const connection = require("./config/connection");
-
 // Importing inquirer and console.table
 const inquirer = require("inquirer");
+// Importing figlet for logo
+const generateLogo = require("./helpers/figlet");
 
-var figlet = require("figlet");
-
-figlet("Employee Tracker", function (err, data) {
-  if (err) {
-    console.log("Something went wrong...");
-    console.dir(err);
-    return;
-  }
+// Function to generate Logo
+generateLogo(function (data) {
   console.log(data);
 });
 
@@ -36,6 +31,7 @@ const questions = [
       "Add a Role",
       "Add an Employee",
       "Update an Employee Role",
+      "View by Department",
       "Exit",
     ],
   },
@@ -60,6 +56,8 @@ const initialPrompt = function () {
     } else if (answer.introChoices === "Update an Employee Role") {
       updateEmployee();
       // If none of the above are met/user selects 'Exit' connection will end
+    } else if (answer.introChoices === "View by Department") {
+      viewByDept();
     } else {
       connection.end();
     }
@@ -277,7 +275,9 @@ function addEmployee() {
               },
               function (err, res) {
                 if (err) throw err;
-                console.log("Employee added successfully!");
+                console.log(
+                  `Employee ${answer.first_name} ${answer.last_name} successfully added`
+                );
 
                 // Call function to view all employees table with new addition
                 viewAllEmployees();
@@ -328,11 +328,17 @@ function updateEmployee() {
       },
     ])
     .then(function (answer) {
+      // variable to hold sql query for getting role id that matches chosen department
       const getRoleId = "SELECT id FROM role WHERE title = ?";
+
+      // Executing query for getting role id for user selected role
       connection.query(getRoleId, [answer.role], function (err, res) {
         if (err) throw err;
+
+        // value of the first object in the res array is being assigned to the variable role_id
         const role_id = res[0].id;
 
+        // Get employee ID based on which employee the user selects from the list splits into two variables to query
         const empName = answer.updateEmployee.split(" ");
         const employee_first = empName[0];
         const employee_last = empName[1];
@@ -353,7 +359,9 @@ function updateEmployee() {
               [role_id, employee_id],
               function (err, res) {
                 if (err) throw err;
-                console.log("Employee Role successfully updated");
+                console.log(
+                  `${answer.updateEmployee} role successfully updated`
+                );
                 viewAllEmployees();
               }
             );
@@ -362,3 +370,51 @@ function updateEmployee() {
       });
     });
 }
+
+// View employees by department.
+function viewByDept() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "departmentName",
+        message: "Which department is this role in?",
+        choices: [
+          "Behavior Analysis Unit",
+          "Forensic Psychology",
+          "Information Technology",
+          "Investigative Support",
+          "Operational Support",
+        ],
+      },
+    ])
+    .then(function (answer) {
+      
+      // Get the department ID based on the department name provided by the user
+      const getDeptId = "SELECT id FROM department WHERE department_name = ?";
+      
+      connection.query(getDeptId, answer.departmentName, (err, results) => {
+        // If there's an error, throw an error
+        if (err) throw err;
+        
+        // Get the department Id from the results of previous query
+        const departmentID = results[0].id;
+        
+        const sqlDept = "SELECT * FROM department WHERE id = ?;";
+        
+        connection.query(sqlDept, departmentID, (err, results) => {
+          if (err) throw err;
+
+          console.table(results)
+          initialPrompt();
+
+        })
+
+    });
+})
+}
+
+// View employees by manager.
+// const sqlViewMgr = "SELECT * FROM employee WHERE manager_id = ?; ";
+
+// Update employee managers.

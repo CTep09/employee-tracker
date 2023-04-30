@@ -22,7 +22,7 @@ CREATE TABLE department (
   id INT(7) NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30),
   last_name VARCHAR(30),
-  Manager_id INT,
+  manager_id INT,
   role_id INT,
   PRIMARY KEY (id),
   FOREIGN KEY (role_id) REFERENCES role(id)

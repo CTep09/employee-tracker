@@ -14,23 +14,24 @@
 
 Employee Tracker is a command-line application content management system(CMS) used for managing employee data. Users can access data and view the output in formatted tables. Users can view all roles, all departments and all employees as well as add a new department, new roll and a new employee. There is also the option to update the role for any employee.
 
+![Walkthrough Video Here]()
+
 ## 💾 Installation
+To install, clone down from GitHub Repository. Once cloned down to local machine, open root folder in terminal. Run `npm i` to install required modules and packages: Inquired and Mysql2. Once all packages are installed, run `node server.js` to initialize application. 
+
 
 ## 💻 Usage
 
 Employee Tracker is a dynamic CMS that can effectively manage a company's employee data. After installation, run `node server.js` to initialize the application. Once run, the user will be presented with the following options:
-```
-"View all Departments",
-"View all Roles",
-"View all Employees",
-"Add a Department",
-"Add a Role",
-"Add an Employee",
-"Update an Employee Role",
-"Exit",
-```
+
+![Welcome Screen](./images/initialized-application.png)
 
 If the user were to select "View all Departments" they would be presented with a formatted table of all departments:
+
+![View All Departments Table](./images/all-dept-table.png)
+
+Users can also add new departments, roles and employees.
+
 
 
 ## 🚀 Technology 
