@@ -31,7 +31,7 @@ const questions = [
       "Add a Role",
       "Add an Employee",
       "Update an Employee Role",
-      "View Exmployee's by Department",
+      "View Employees by Department",
       "Exit",
     ],
   },
@@ -39,7 +39,6 @@ const questions = [
 
 const initialPrompt = function () {
   inquirer.prompt(questions).then((answer) => {
-    console.log(answer);
     // If user answer is equal to all departments, then viewAllDepartments()function will be triggered
     if (answer.introChoices === "View all Departments") {
       viewAllDepartments();
@@ -55,6 +54,8 @@ const initialPrompt = function () {
       addEmployee();
     } else if (answer.introChoices === "Update an Employee Role") {
       updateEmployee();
+    } else if (answer.introChoices === "View Employees by Department") {
+      empByDept();
       // If none of the above are met/user selects 'Exit' connection will end
     } else {
       connection.end();
@@ -165,12 +166,12 @@ function addRole() {
           // If there's an error, throw an error
           if (err) throw err;
 
+          // Get the department Id from the results of previous query
+          const departmentID = results[0].id;
+
           // Insert new role with corresponding department Id
           const insertRoleQuery =
             "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
-
-          // Get the department Id from the results of previous query
-          const departmentID = results[0].id;
 
           // Define values to be inserted into new role
           const roleValues = [answer.newRole, answer.newSalary, departmentID];
@@ -362,5 +363,49 @@ function updateEmployee() {
           });
         });
     });
+  });
+}
+
+// View employee's by department
+function empByDept() {
+  const getDepartments = "SELECT * FROM department";
+  connection.query(getDepartments, (err, results) => {
+    if (err) throw err;
+
+    // Get the department names from the results, creating an array or choices
+    const choices = results.map((dept) => dept.department_name);
+
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "departmentName",
+          message: "Which department would you like to view?",
+          choices: choices,
+        },
+      ])
+      .then((answer) => {
+        // Get the department ID based on the department name provided by the user
+        const getDeptId = "SELECT id FROM department WHERE department_name = ?";
+
+        connection.query(getDeptId, answer.departmentName, (err, results) => {
+          // If there's an error, throw an error
+          if (err) throw err;
+
+          const deptId = results[0].id;
+
+          // Sql query uses INNER JOIN to combine employee and department tables WHERE the department id = to department user selected
+          const sql =
+            "SELECT * FROM department INNER JOIN employee ON department.id = employee.role_id WHERE department.id = ?;";
+
+          connection.query(sql, deptId, (err, results) => {
+            if (err) throw err;
+
+            console.table(results);
+
+            initialPrompt();
+          });
+        });
+      });
   });
 }
