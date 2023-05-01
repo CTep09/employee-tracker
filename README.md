@@ -32,9 +32,11 @@ If the user were to select "View all Departments" they would be presented with a
 
 Users can also add new departments, roles and employees.
 
+![Add Department, Role Employee](./images/add-data.gif)
 
+To view employees by Department just select the option then a department
 
-
+![View Employees by Department](./images/view-by-dept.png)
 
 ## 🚀 Technology 
 [![My Skills](https://skillicons.dev/icons?i=js,nodejs,mysql,)](https://skillicons.dev)
