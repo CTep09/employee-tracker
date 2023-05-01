@@ -397,7 +397,7 @@ function empByDept() {
 
           // Sql query uses INNER JOIN to combine employee and department tables WHERE the department id = to department user selected
           const sql =
-            "SELECT * FROM department INNER JOIN employee ON department.id = employee.role_id WHERE department.id = ?;";
+            "SELECT * FROM department INNER JOIN role ON department.id = role.department_id INNER JOIN employee ON role.id = employee.role_id WHERE department.id = ?;";
 
           connection.query(sql, deptId, (err, results) => {
             if (err) throw err;
