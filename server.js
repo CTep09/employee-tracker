@@ -248,7 +248,7 @@ function addEmployee() {
             const manager_first = managerName[0];
             const manager_last = managerName[1];
 
-            // sql query to identify id for selected manager
+            // sql query to identify id for selected manager using names stored in variables above
             const mgrInfo =
               "SELECT id FROM employee WHERE first_name = ? AND last_name = ?";
             connection.query(
@@ -256,9 +256,10 @@ function addEmployee() {
               [manager_first, manager_last],
               function (err, res) {
                 if (err) throw err;
+
                 const manager_id = res[0].id;
 
-                // Insert the new employee data into employee table
+                // Query to Insert the new employee data into employee table
                 const newEmp = "INSERT INTO employee SET ?";
                 connection.query(
                   newEmp,
